@@ -33,19 +33,19 @@ export const getFileDiffFromGithub = async ({
     }
   )
 
-  if (!diff.exitCode || !base.exitCode || !head.exitCode) {
+  if (diff.exitCode || base.exitCode || head.exitCode) {
     const errors: string[] = []
 
-    if(!diff.exitCode){
-        errors.push( `Failed to get diff files between ${base}..${head} Exit code: ${diff.exitCode}. Due to error ${diff.stderr}`)
+    if(diff.exitCode){
+        errors.push( `Failed to get diff files between ${baseSha}..${headSha} Exit code: ${diff.exitCode}. Due to error ${diff.stderr}`)
     }
 
-    if(!base.exitCode){
-        errors.push( `Failed to fetch base: ${base} commit Exit code: ${base.exitCode}. Due to error ${base.stderr}`)
+    if(base.exitCode){
+        errors.push( `Failed to fetch base: ${baseSha} commit Exit code: ${base.exitCode}. Due to error ${base.stderr}`)
     }
 
-    if(!head.exitCode){
-        errors.push( `Failed to fetch head: ${head} commit Exit code: ${head.exitCode}. Due to error ${head.stderr}`)
+    if(head.exitCode){
+        errors.push( `Failed to fetch head: ${headSha} commit Exit code: ${head.exitCode}. Due to error ${head.stderr}`)
     }
 
     throw new Error(errors.join("\n"))
