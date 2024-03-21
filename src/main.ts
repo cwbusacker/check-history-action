@@ -34,13 +34,11 @@ async function run(): Promise<void> {
       repo: context.repo.repo ?? '',
       owner: context.repo.owner ?? '',
       issue_number: context.payload.number ?? 0,
-      sha: context.sha ?? ''
+      sha: context.payload.pull_request?.head.sha || "",
     })
 
-    if(github.CONFIG.sha === '')
-    {
-      console.error(`Error: Commit sha is an empty string. This action may not be supported in this context. Context: ${context}`)
-    }
+
+    console.error(`Error: Commit sha is ${github.CONFIG.sha} This action may not be supported in this context. Context: ${context}`)
 
     if (UPLOAD_KEY) {
       const ARTIFACT_RETENTION_DAYS = getInput('ARTIFACT_RETENTION_DAYS')
