@@ -34,10 +34,14 @@ async function run(): Promise<void> {
       repo: context.repo.repo ?? '',
       owner: context.repo.owner ?? '',
       issue_number: context.payload.number ?? 0,
-      sha: context.sha ?? ''
+      sha: context.sha ?? '',
     })
 
     if (UPLOAD_KEY) {
+      if (github.CONFIG.sha === '') {
+        console.error("The sha is an empty string. Skipping upload")
+        return
+      }
       const ARTIFACT_RETENTION_DAYS = getInput('ARTIFACT_RETENTION_DAYS')
         ? parseInt(getInput('RETENTION_DAYS'), 10)
         : 90
